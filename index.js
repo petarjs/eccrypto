@@ -216,8 +216,8 @@ exports.encrypt = function (publicKeyTo, msg, opts) {
       ephemPrivateKey = opts.ephemPrivateKey || crypto.randomBytes(32);
     }
     ephemPublicKey = getPublic(ephemPrivateKey);
-    resolve(derive(ephemPrivateKey, publicKeyTo));
-  }).then(function (Px) {
+    resolve({ ephemPrivateKey, Px: derive(ephemPrivateKey, publicKeyTo) });
+  }).then(function ({ ephemPrivateKey, Px }) {
     var hash = sha512(Px);
     var iv = opts.iv || crypto.randomBytes(16);
     var encryptionKey = hash.slice(0, 32);

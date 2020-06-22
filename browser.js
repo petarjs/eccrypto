@@ -216,9 +216,9 @@ var derive = (exports.derive = function (privateKeyA, publicKeyB) {
 exports.encrypt = function (publicKeyTo, msg, opts) {
   opts = opts || {};
   // Tmp variables to save context from flat promises;
-  var iv, ephemPublicKey, ciphertext, macKey;
+  var iv, ephemPublicKey, ephemPrivateKey, ciphertext, macKey;
   return new Promise(function (resolve) {
-    var ephemPrivateKey = opts.ephemPrivateKey || randomBytes(32);
+    ephemPrivateKey = opts.ephemPrivateKey || randomBytes(32);
     // There is a very unlikely possibility that it is not a valid key
     while (!isValidPrivateKey(ephemPrivateKey)) {
       ephemPrivateKey = opts.ephemPrivateKey || randomBytes(32);
