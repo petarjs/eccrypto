@@ -211,9 +211,13 @@ exports.encrypt = function (publicKeyTo, msg, opts) {
   var ephemPublicKey;
   return new promise(function (resolve) {
     var ephemPrivateKey = opts.ephemPrivateKey || crypto.randomBytes(32);
+    if (opts.ephemPrivateKey && typeof opts.ephemPrivateKey === "string") {
+      ephemPrivateKey = Buffer.from(opts.ephemPrivateKey, "hex");
+    }
     // There is a very unlikely possibility that it is not a valid key
     while (!isValidPrivateKey(ephemPrivateKey)) {
-      ephemPrivateKey = opts.ephemPrivateKey || crypto.randomBytes(32);
+      ephemPrivateKey =
+        ephemPrivateKey || opts.ephemPrivateKey || crypto.randomBytes(32);
     }
     ephemPublicKey = getPublic(ephemPrivateKey);
     resolve(derive(ephemPrivateKey, publicKeyTo));
